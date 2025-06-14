@@ -59,7 +59,7 @@ body{
     content:'';
     width:20px;
     height:2px;
-    background: rgb(15, 76, 52);
+    background: rgb(29, 75, 84);
     position:absolute;
     top: 50%;
     left: -30px;
@@ -74,11 +74,11 @@ body{
 
 
 .quote-box button{
-    background: rgb(15, 76, 52);
+    background: rgb(29, 75, 84);
     color: #fff;
     font-size: 23px;
     border-radius: 25px;
-    border: 1px solid rgb(15, 76, 52);
+    border: 1px solid rgb(29, 75, 84);
     width: 150px;
     height: 50px;
     display: flex;
