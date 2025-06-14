@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quote of the day</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="quote-box">
+            <h2 style="color:rgb(15, 76, 52);">Quote of the day</h2>
+            <hr id="underline"><br><br>
+            <blockquote style="color:rgb(15, 76, 52);" id="quote">Loading your daily inspirations</blockquote>
+            <span style="color:rgb(15, 76, 52);" id="author">Please Wait----</span>
+            <div>
+                <button onclick="getquote(api_url)">New Quote</button>
+                
+            </div>
+        </div>
+
+        <script>
+    const quote = document.getElementById("quote");
+    const author = document.getElementById("author");
+    const api_url = "https://api.quotable.io/random";
+
+    async function getquote(url) {
+        const response = await fetch(url);
+        const data = await response.json();
+        quote.innerHTML = data.content;
+        author.innerHTML = data.author;
+    }
+
+    getquote(api_url);
+</script>
+
+
+    </body>
+    
+</html>
