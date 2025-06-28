@@ -19,17 +19,108 @@
 
         <script>
     const quote = document.getElementById("quote");
-    const author = document.getElementById("author");
-    const api_url = "https://api.quotable.io/random";
+        const author = document.getElementById("author");
+        const button = document.getElementById("newQuoteBtn");
+        const api_url = "https://api.quotable.io/random";
 
-    async function getquote(url) {
-        const response = await fetch(url);
-        const data = await response.json();
-        quote.innerHTML = data.content;
-        author.innerHTML = data.author;
-    }
+        // Fallback quotes array
+        const fallbackQuotes = [
+            {
+                content: "The only way to do great work is to love what you do.",
+                author: "Steve Jobs"
+            },
+            {
+                content: "Life is what happens to you while you're busy making other plans.",
+                author: "John Lennon"
+            },
+            {
+                content: "The future belongs to those who believe in the beauty of their dreams.",
+                author: "Eleanor Roosevelt"
+            },
+            {
+                content: "It is during our darkest moments that we must focus to see the light.",
+                author: "Aristotle"
+            },
+            {
+                content: "The only impossible journey is the one you never begin.",
+                author: "Tony Robbins"
+            },
+            {
+                content: "In the middle of difficulty lies opportunity.",
+                author: "Albert Einstein"
+            },
+            {
+                content: "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+                author: "Winston Churchill"
+            },
+            {
+                content: "The way to get started is to quit talking and begin doing.",
+                author: "Walt Disney"
+            },
+            {
+                content: "Don't let yesterday take up too much of today.",
+                author: "Will Rogers"
+            },
+            {
+                content: "You learn more from failure than from success. Don't let it stop you. Failure builds character.",
+                author: "Unknown"
+            }
+        ];
 
-    getquote(api_url);
+        function getRandomFallbackQuote() {
+            const randomIndex = Math.floor(Math.random() * fallbackQuotes.length);
+            return fallbackQuotes[randomIndex];
+        }
+
+        async function getQuote() {
+            // Show loading state
+            quote.innerHTML = "Loading your daily inspiration...";
+            author.innerHTML = "Please wait...";
+            button.disabled = true;
+            button.innerHTML = "Loading...";
+            
+            try {
+                // Try to fetch from API first
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); 
+                
+                const response = await fetch(api_url, {
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Display API quote
+                setTimeout(() => {
+                    quote.innerHTML = `"${data.content}"`;
+                    author.innerHTML = `— ${data.author}`;
+                    button.disabled = false;
+                    button.innerHTML = "New Quote";
+                }, 500);
+                
+            } catch (error) {
+                console.log('API unavailable, using fallback quotes:', error.message);
+                
+                // Use fallback quotes
+                const fallbackQuote = getRandomFallbackQuote();
+                
+                setTimeout(() => {
+                    quote.innerHTML = `"${fallbackQuote.content}"`;
+                    author.innerHTML = `— ${fallbackQuote.author}`;
+                    button.disabled = false;
+                    button.innerHTML = "New Quote";
+                }, 500);
+            }
+        }
+
+        
+        getQuote();
 </script>
 
 
